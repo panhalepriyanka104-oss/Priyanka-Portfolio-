@@ -1,0 +1,64 @@
+name: Finalize portfolio
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/finalize-portfolio.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply final portfolio edits
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          # Normalise wording.
+          s = s.replace('résumé', 'resume').replace('Résumé', 'Resume').replace('RÉSUMÉ', 'RESUME')
+
+          # Replace hero actions: Published Work + Video Highlight + LinkedIn.
+          old = '''<div class="btns"><a class="btn primary" href="#research">View Published Work</a><a class="btn" href="mailto:panhale.priyanka104@gmail.com">Email Me</a><a class="btn" href="https://www.linkedin.com/in/priyanka-panhale" target="_blank" rel="noopener">LinkedIn</a></div>'''
+          new = '''<div class="btns"><a class="btn primary" href="#research">View Published Work</a><a class="btn" href="https://www.youtube.com/watch?v=4z7SxktkFLE" target="_blank" rel="noopener">Video Highlight</a><a class="btn" href="https://www.linkedin.com/in/priyanka-panhale" target="_blank" rel="noopener">LinkedIn</a></div><div style="margin-top:16px;color:#d7e2ea;font-weight:650;font-size:.96rem;display:flex;gap:18px;flex-wrap:wrap"><a href="mailto:panhale.priyanka104@gmail.com" style="color:#fff">panhale.priyanka104@gmail.com</a><a href="tel:+919420281935" style="color:#fff">+91 9420281935</a></div>'''
+          if old in s:
+              s = s.replace(old, new, 1)
+          else:
+              # More tolerant fallback for later versions of the hero.
+              s = re.sub(
+                  r'<div class="btns"><a class="btn primary" href="#research">View Published Work</a>.*?</div>',
+                  new,
+                  s,
+                  count=1,
+                  flags=re.S,
+              )
+
+          # Remove the Research approach section if it exists.
+          s = re.sub(
+              r'<section[^>]*>(?:(?!</section>).)*?(?:Research approach|A disciplined path from question to insight\.)(?:(?!</section>).)*?</section>',
+              '',
+              s,
+              flags=re.I | re.S,
+          )
+
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit final edits
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes required"
+          else
+            git commit -m "Finalize HR shareable portfolio"
+            git push
+          fi
