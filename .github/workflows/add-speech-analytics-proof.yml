@@ -21,12 +21,11 @@ jobs:
           text = p.read_text(encoding='utf-8')
           url = 'https://qksgroup.com/newsroom/create-wow-experiences-with-ai-enabled-speech-analyticss-47'
           if url not in text:
-              card = '<article class="pub"><small>AI-Enabled Speech Analytics · Customer Experience</small><h4>QKS Group — Create WOW Experiences with AI-Enabled Speech Analytics</h4><p>QKS Group newsroom feature highlighting AI-enabled speech analytics and its role in customer experience, adding another external proof point around Priyanka\'s research domain and thought-leadership coverage.</p><a href="' + url + '" target="_blank" rel="noopener">Read publication →</a></article>'
-              marker = '<div class="pubs">'
-              if marker in text:
-                  text = text.replace(marker, marker + card, 1)
-              else:
+              card = '''<article class="research-card"><div class="tag">AI-Enabled Speech Analytics · Customer Experience</div><h4>QKS Group — Create WOW Experiences with AI-Enabled Speech Analytics</h4><p>QKS Group newsroom feature on AI-enabled speech analytics and customer experience, reinforcing Priyanka’s research exposure across CX technologies and AI-enabled customer engagement.</p><a href="https://qksgroup.com/newsroom/create-wow-experiences-with-ai-enabled-speech-analyticss-47" target="_blank" rel="noopener">Read publication →</a></article>'''
+              marker = '<div class="research-grid">'
+              if marker not in text:
                   raise SystemExit('Published Work grid marker not found')
+              text = text.replace(marker, marker + '\n' + card, 1)
               p.write_text(text, encoding='utf-8')
           PY
       - name: Commit portfolio update
