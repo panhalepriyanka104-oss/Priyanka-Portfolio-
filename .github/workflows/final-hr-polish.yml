@@ -1,0 +1,44 @@
+name: Final HR portfolio polish
+
+on:
+  push:
+    paths:
+      - '.github/workflows/final-hr-polish.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  polish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Polish portfolio
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('index.html')
+          text = p.read_text(encoding='utf-8')
+
+          text = text.replace('4+ years of dedicated research experience', 'approximately 4 years of dedicated research experience')
+          text = text.replace('<strong>4+ yrs</strong><span>Dedicated market research experience</span>', '<strong>≈4 yrs</strong><span>Dedicated market research experience</span>')
+          text = text.replace('<span>panhale.priyanka104@gmail.com</span><span>+91 9420281935</span>', '<span><a href="mailto:panhale.priyanka104@gmail.com">panhale.priyanka104@gmail.com</a></span><span><a href="tel:+919420281935">+91 9420281935</a></span>')
+
+          # Ensure target=_blank links use noopener.
+          text = re.sub(r'target="_blank"(?! rel=)', 'target="_blank" rel="noopener"', text)
+
+          # Add share-preview metadata once.
+          if 'property="og:title"' not in text:
+              meta = '''\n  <link rel="canonical" href="https://panhalepriyanka104-oss.github.io/Priyanka-Portfolio-/" />\n  <meta property="og:type" content="website" />\n  <meta property="og:title" content="Priyanka Panhale | Market Research & Competitive Intelligence" />\n  <meta property="og:description" content="Market research and consulting professional with experience in C-suite primary research, competitive intelligence, vendor evaluation and technology markets." />\n  <meta property="og:url" content="https://panhalepriyanka104-oss.github.io/Priyanka-Portfolio-/" />\n  <meta property="og:image" content="https://panhalepriyanka104-oss.github.io/Priyanka-Portfolio-/Priyanka%20Photo.jpg" />\n  <meta name="twitter:card" content="summary_large_image" />\n'''
+              text = text.replace('</title>', '</title>' + meta, 1)
+
+          p.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit polished portfolio
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Final HR-facing portfolio polish"
+          git push
