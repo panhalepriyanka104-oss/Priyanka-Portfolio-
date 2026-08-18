@@ -1,0 +1,66 @@
+name: Expand complete public research evidence
+
+on:
+  push:
+    paths:
+      - '.github/workflows/expand-public-evidence.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-portfolio:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replace Published Work with complete evidence library
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          text = p.read_text(encoding='utf-8')
+          start = text.index('<section class="alt" id="research">')
+          end = text.index('<section class="alt">', start + 1)
+          section = r'''<section class="alt" id="research"><div class="container"><div class="section-head"><div class="kicker">Published analyst evidence</div><h3 class="section-title">Research, interviews, webinars and market commentary visible outside the resume.</h3><p>Selected public evidence of Priyanka’s analyst work across Customer Journey Mapping, Customer Journey Analytics, Voice of Customer, CX Management, MarTech, Digital Commerce, ICT and semiconductor markets. The most role-relevant CX evidence is shown first.</p></div><div class="research-grid">
+
+<article class="research-card"><div class="tag">Customer Journey Mapping · 2019</div><h4>SuiteCX — Customer Journey Mapping Market Outlook</h4><p>Public recognition tied to Customer Journey Mapping research, with Priyanka named in the underlying market outlook and analyst commentary.</p><a href="https://suitecx360.com/suitecx-positioned-as-a-2019-technology-leader-in-customer-journey-mapping-market-by-quadrant-knowledge-solutions/" target="_blank" rel="noopener">View evidence →</a></article>
+<article class="research-card"><div class="tag">Customer Journey Mapping</div><h4>Signavio — SPARK Matrix™ Recognition</h4><p>Public analyst commentary on dynamic, actionable customer journey mapping and broader customer experience programs.</p><a href="https://www.signavio.com/news/quadrant-spark-matrix-customer-journey-mapping/" target="_blank" rel="noopener">View evidence →</a></article>
+<article class="research-card"><div class="tag">Customer Journey Mapping · 2022</div><h4>SuiteCX — CJM SPARK Matrix™ Leader</h4><p>Analyst commentary on end-to-end journey management, visualization, collaboration, integration and actionability.</p><a href="https://www.prnewswire.com/news-releases/suitecx-positioned-as-the-leader-in-the-2022-spark-matrix-for-customer-journey-mapping-cjm-by-quadrant-knowledge-solutions-301590767.html" target="_blank" rel="noopener">View evidence →</a></article>
+<article class="research-card"><div class="tag">Customer Journey Mapping · 2021</div><h4>Clarivate CX Journey Management — CJM SPARK Matrix™</h4><p>Analyst coverage of customer and employee journeys, moments of truth, pain points, satisfaction and loyalty.</p><a href="https://www.prnewswire.com/news-releases/clarivate-cx-journey-management-named-as-a-2021-technology-leader-in-quadrant-knowledge-solutions-spark-matrix-for-customer-journey-mapping-cjm-2021-301403585.html" target="_blank" rel="noopener">View evidence →</a></article>
+<article class="research-card"><div class="tag">Customer Journey Analytics · 2021</div><h4>CSG — Customer Journey Analytics</h4><p>Analyst commentary on real-time journey analytics, customer understanding, AI/ML and next-best experience.</p><a href="https://www.prnewswire.com/news-releases/transforming-customer-experience-with-real-time-analytics-csg-tops-2021-customer-journey-spark-matrix-quadrant-knowledge-solutions-301438942.html" target="_blank" rel="noopener">View evidence →</a></article>
+<article class="research-card"><div class="tag">Customer Journey Analytics · 2021</div><h4>NICE — Customer Journey Analytics</h4><p>Public analyst evidence covering personalization, journey and interaction analytics, customer satisfaction and churn reduction.</p><a href="https://www.businesswire.com/news/home/20211130005488/en/NICE-Customer-Journey-Analytics-Recognized-for-Technology-Excellence-and-Customer-Impact-Driven-by-Leadership-in-AI" target="_blank" rel="noopener">View evidence →</a></article>
+<article class="research-card"><div class="tag">Customer Journey Analytics · 2020</div><h4>NICE Nexidia — Customer Journey Analytics</h4><p>Analyst commentary on AI-enabled customer engagement analytics and converting customer insights into action.</p><a href="https://www.businesswire.com/news/home/20201203005548/en/SPARK-Matrix-Customer-Journey-Analytics-2020-Recognizes-NICE-Nexidia-as-Technology-Leader-and-Cites-NICE-ENLIGHTEN-as-a-Differentiator" target="_blank" rel="noopener">View evidence →</a></article>
+
+<article class="research-card"><div class="tag">Voice of Customer</div><h4>Verint — Voice of the Customer Platform</h4><p>Independent research-firm evaluation supporting Priyanka’s experience across Voice of Customer and enterprise CX technology.</p><a href="https://www.businesswire.com/news/home/20211005005066/en/Verint-Named-a-Leader-for-Voice-of-the-Customer-Platform-in-Research-Firm-Evaluation" target="_blank" rel="noopener">View evidence →</a></article>
+<article class="research-card"><div class="tag">CX Management · 2022</div><h4>Datamatics — CX Management SPARK Matrix™</h4><p>Analyst coverage spanning customer analytics, process consulting, omnichannel experience, process gaps and AI-enabled operations.</p><a href="https://blog.datamatics.com/datamatics-is-a-leader-in-customer-experience-management-spark-matrix-2022" target="_blank" rel="noopener">View evidence →</a></article>
+<article class="research-card"><div class="tag">CX Management · 2022</div><h4>[24]7.ai — CX Management Services</h4><p>Public analyst commentary covering customer needs, conversational AI, self-service and CX management.</p><a href="https://www.prnewswire.com/news-releases/247ai-positioned-as-the-leader-in-the-2022-spark-matrix-for-cx-management-services-by-quadrant-knowledge-solutions-301553927.html" target="_blank" rel="noopener">View evidence →</a></article>
+<article class="research-card"><div class="tag">AI-Enabled Speech Analytics · CX</div><h4>QKS Group — Create WOW Experiences with AI-Enabled Speech Analytics</h4><p>QKS newsroom evidence relating AI-enabled speech analytics to customer-experience insight and improvement.</p><a href="https://qksgroup.com/newsroom/create-wow-experiences-with-ai-enabled-speech-analyticss-47" target="_blank" rel="noopener">View evidence →</a></article>
+<article class="research-card"><div class="tag">CX Platform · Customer Journey</div><h4>QuestionPro / SuiteCX — Full-Stack CX Platform</h4><p>Public acquisition coverage reproducing analyst assessment of SuiteCX and end-to-end customer journey management capabilities.</p><a href="https://www.globenewswire.com/news-release/2022/10/17/2535286/0/en/QuestionPro-Acquires-SuiteCX-Creates-First-Full-Stack-CX-Platform.html" target="_blank" rel="noopener">View evidence →</a></article>
+
+<article class="research-card"><div class="tag">Speaking &amp; Webinars · ABM</div><h4>QKS Group — ABM Webinar</h4><p>Webinar highlight featuring Priyanka presenting on Account-Based Marketing, demonstrating analyst communication and thought leadership.</p><a href="https://www.linkedin.com/posts/qksgroup_abm-ugcPost-6960834994986471424-p2Bz/" target="_blank" rel="noopener">Watch webinar →</a></article>
+<article class="research-card"><div class="tag">Account-Based Marketing · 2021</div><h4>Madison Logic — ABM SPARK Matrix™</h4><p>Priyanka is publicly identified as a Strategic Research Analyst, with commentary on buyer journeys, engagement, pipeline impact and marketing ROI.</p><a href="https://www.madisonlogic.com/press-release/madison-logic-named-a-leader-in-2021-quadrant-knowledge-solutions-spark-matrix-for-account-based-marketing-abm-platforms/" target="_blank" rel="noopener">View evidence →</a></article>
+<article class="research-card"><div class="tag">Account-Based Marketing · 2021</div><h4>Demandbase — ABM SPARK Matrix™</h4><p>Analyst commentary on account-based experiences, AI/ML, personalization, orchestration, attribution and customer churn.</p><a href="https://www.demandbase.com/press-release/demandbase-spark-matrix-technology-leader/" target="_blank" rel="noopener">View evidence →</a></article>
+<article class="research-card"><div class="tag">Account-Based Marketing · 2021</div><h4>MRP — ABM SPARK Matrix™</h4><p>Research-driven analyst commentary on enterprise ABM programs, global marketing strategy and competitive positioning.</p><a href="https://www.prnewswire.com/news-releases/mrp-named-the-2021-technology-leader-in-quadrant-knowledge-solutions-spark-matrix-for-account-based-marketing-abm-platform-2021-301407362.html" target="_blank" rel="noopener">View evidence →</a></article>
+
+<article class="research-card"><div class="tag">Digital Commerce · 2021</div><h4>HCL Software — B2B &amp; B2C Digital Commerce</h4><p>Analyst commentary on AI/ML-driven personalization, unified commerce, customer experience and marketing capabilities.</p><a href="https://www.prnewswire.com/news-releases/hcl-software-has-emerged-as-2021-spark-matrix-leader-in-the-b2b-and-b2c-digital-commerce-platforms-market-by-quadrant-knowledge-solutions-301267581.html" target="_blank" rel="noopener">View evidence →</a></article>
+<article class="research-card"><div class="tag">Digital Commerce · 2022</div><h4>HCL Software — B2B &amp; B2C Digital Commerce</h4><p>Analyst coverage of cloud-native commerce, personalization, customer experience and technology/customer-impact evaluation.</p><a href="https://www.prnewswire.com/news-releases/hcl-software-named-as-the-leader-in-the-2022-spark-matrix-of-the-b2c-and-b2b-digital-commerce-platforms-market-by-quadrant-knowledge-solutions-301515694.html" target="_blank" rel="noopener">View evidence →</a></article>
+<article class="research-card"><div class="tag">Digital Experience Platform · 2021</div><h4>HCL Software — DXP SPARK Matrix™</h4><p>Analyst commentary on journey insights and management, digital touchpoints, analytics and personalization.</p><a href="https://www.prnewswire.com/news-releases/hcl-software-named-as-a-2021-technology-leader-in-quadrant-knowledge-solutions-spark-matrix-for-digital-experience-platform-dxp-2021-301429961.html" target="_blank" rel="noopener">View evidence →</a></article>
+<article class="research-card"><div class="tag">Digital Experience Platform · 2020</div><h4>HCL Software — DXP SPARK Matrix™</h4><p>Public analyst commentary on personalized marketing and customer experience across B2B, B2C and B2E use cases.</p><a href="https://www.prnewswire.com/news-releases/hcl-software-is-leader-in-spark-matrix-digital-experience-platform-dxp-2020-301196609.html" target="_blank" rel="noopener">View evidence →</a></article>
+<article class="research-card"><div class="tag">B2B2C · Third-Party Citation</div><h4>Transition from B2B to B2B2C</h4><p>Third-party article citing Priyanka’s analyst commentary from digital commerce research.</p><a href="https://orienteedecommerce.medium.com/transition-from-b2b-to-b2bc-the-time-is-now-dc2016277dad" target="_blank" rel="noopener">View evidence →</a></article>
+
+<article class="research-card"><div class="tag">Semiconductors · Industry Interview · 2023</div><h4>CircuitDigest — Global Semiconductor Market Outlook</h4><p>Interview explicitly identifying Priyanka as Senior Consultant, ICT Practice, Future Market Insights, discussing semiconductor growth, resilience, packaging, India and emerging technologies.</p><a href="https://circuitdigest.com/interview/combining-growth-of-global-20-25-semiconductor-businesses-market-rose-by-3-percent" target="_blank" rel="noopener">Read interview →</a></article>
+<article class="research-card"><div class="tag">Supply Chain · Thought Leadership</div><h4>QKS Group — Resilient Supply Chains &amp; Emerging Technologies</h4><p>Research commentary exploring how emerging technologies can strengthen enterprise supply-chain resilience.</p><a href="https://qksgroup.com/blogs/will-the-emerging-technologies-enable-building-a-resilient-supply-chain-86" target="_blank" rel="noopener">View article →</a></article>
+<article class="research-card"><div class="tag">Omnichannel Experience · Banking</div><h4>QKS Group — Next-Generation Banking Experience</h4><p>Thought-leadership coverage of omnichannel experience and the evolution of banking customer journeys.</p><a href="https://qksgroup.com/blogs/omnichannel-experience-is-a-leapfrog-to-the-next-generation-banking-era-25" target="_blank" rel="noopener">View article →</a></article>
+
+</div></div></section>
+'''
+          text = text[:start] + section + text[end:]
+          p.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit expanded evidence library
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Expand complete public research evidence library"
+          git push
